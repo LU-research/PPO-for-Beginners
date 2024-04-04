@@ -5,10 +5,11 @@ import torch.nn as nn
 
 
 class SpikingNN(nn.Module):
-    def __init__(self, beta, n_input, n_hidden, n_output):
+    def __init__(self, beta, T, n_input, n_hidden, n_output):
         super(SpikingNN, self).__init__()
 
         self.beta = beta
+        self.T = T
 
         self.fc1 = nn.Linear(n_input, n_hidden[0])
         self.lif1 = snn.Leaky(beta=self.beta)
@@ -28,8 +29,8 @@ class SpikingNN(nn.Module):
         lif2_spk_rec = []
         lif3_mem_rec = []
 
-        for step in range(obs.shape[0]):
-            cur1 = self.fc1(obs[step])
+        for step in range(self.T):
+            cur1 = self.fc1(obs)
             lif1_spk, lif1_mem = self.lif1(cur1, lif1_mem)
             cur2 = self.fc2(lif1_spk)
             lif2_spk, lif2_mem = self.lif2(cur2, lif2_mem)
