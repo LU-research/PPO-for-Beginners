@@ -25,7 +25,7 @@ def train(env, params):
     model = PPO(policy_class=SpikingNN, env=env, params=params)
 
     # load saved model
-    if params.load_last_model is True:
+    if params.load_last_model:
         saved_actor = torch.load(params.actor_model)
         saved_critic = torch.load(params.critic_model)
 
