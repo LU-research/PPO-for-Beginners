@@ -188,8 +188,9 @@ class PPO:
                 # Log actor loss
                 self.logger.actor_loss.append(actor_loss.detach().numpy().item())
 
-            # Increment count of updates
+            # Update the logger
             self.logger.n_updates += 1
+            self.logger.t_so_far = t_so_far
 
             # print logged information
             self.log_summary()
@@ -204,6 +205,7 @@ class PPO:
         avg_actor_loss = np.mean(self.logger.actor_loss)
 
         print(f'-------------------Iteration #{self.logger.n_updates}------------------------')
+        print(f'Time steps completed: {self.logger.t_so_far}')
         print(f'Average reward: {avg_eps_rewards:.2f}')
         print(f'Actor loss: {avg_actor_loss:.2f}')
         print('\n')

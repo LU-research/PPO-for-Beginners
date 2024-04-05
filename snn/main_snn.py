@@ -37,7 +37,7 @@ def train(env, params):
         model.critic.load_state_dict(saved_critic, strict=False)
 
     # Train the PPO model with a specified total timesteps
-    model.learn(total_timesteps=100000)
+    model.learn(total_timesteps=200_000_000)
 
 
 if __name__ == '__main__':
@@ -72,3 +72,6 @@ if __name__ == '__main__':
     pendulum_env = gym.make('Pendulum-v0')
 
     train(env=pendulum_env, params=hyper_params)
+
+    # close the environment
+    pendulum_env.close()
