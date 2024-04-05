@@ -66,7 +66,7 @@ if __name__ == '__main__':
     hyper_params.actor_model = './snn_ppo_actor.pth'
     hyper_params.critic_model = './snn_ppo_critic.pth'
     hyper_params.save_freq = 10  # How often to save the model
-    hyper_params.load_last_model = True  # whether last saved model should be loaded
+    hyper_params.load_last_model = False  # whether last saved model should be loaded
 
     # Create environment
     pendulum_env = gym.make('Pendulum-v0')
