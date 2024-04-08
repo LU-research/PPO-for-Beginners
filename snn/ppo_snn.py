@@ -207,7 +207,8 @@ class PPO:
         print(f'-------------------Iteration #{self.logger.n_updates}------------------------')
         print(f'Time steps completed: {self.logger.t_so_far}')
         print(f'Average reward: {avg_eps_rewards:.2f}')
-        print(f'Actor loss: {avg_actor_loss:.2f}')
+        print(f'Actor losses: {['{:.2f}'.format(loss) for loss in self.logger.actor_loss]}')
+        print(f'Average actor loss: {avg_actor_loss:.2f}')
         print('\n')
 
         # reset actor loss

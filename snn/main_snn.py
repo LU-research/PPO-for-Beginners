@@ -33,8 +33,12 @@ def train(env, params):
         saved_actor = drop_mem_states(model.actor, saved_actor)
         saved_critic = drop_mem_states(model.critic, saved_critic)
 
-        model.actor.load_state_dict(saved_actor, strict=False)
-        model.critic.load_state_dict(saved_critic, strict=False)
+        missing_keys_actor, unexpec_keys_actor = model.actor.load_state_dict(saved_actor, strict=False)
+        missing_keys_critic, unexpec_keys_critic = model.critic.load_state_dict(saved_critic, strict=False)
+
+        print(f'{missing_keys_actor} \n {unexpec_keys_actor}')
+        print(f'{missing_keys_critic} \n {unexpec_keys_critic}')
+        print('You should only see lif1.mem, lif2.mem and lif3.mem above. If that\'s the case, the model has been loaded successfully.')
 
     # Train the PPO model with a specified total timesteps
     model.learn(total_timesteps=200_000_000)
@@ -66,7 +70,7 @@ if __name__ == '__main__':
     hyper_params.actor_model = './snn_ppo_actor.pth'
     hyper_params.critic_model = './snn_ppo_critic.pth'
     hyper_params.save_freq = 10  # How often to save the model
-    hyper_params.load_last_model = False  # whether last saved model should be loaded
+    hyper_params.load_last_model = True  # whether last saved model should be loaded
 
     # Create environment
     pendulum_env = gym.make('Pendulum-v0')
