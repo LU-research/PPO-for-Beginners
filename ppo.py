@@ -76,6 +76,12 @@ class PPO:
 		"""
 		print(f"Learning... Running {self.max_timesteps_per_episode} timesteps per episode, ", end='')
 		print(f"{self.timesteps_per_batch} timesteps per batch for a total of {total_timesteps} timesteps")
+
+		############## SD ##############
+		n_timesteps = []
+		avg_eps_return = []
+		################################
+
 		t_so_far = 0 # Timesteps simulated so far
 		i_so_far = 0 # Iterations ran so far
 		while t_so_far < total_timesteps:                                                                       # ALG STEP 2
@@ -140,6 +146,11 @@ class PPO:
 				# Log actor loss
 				self.logger['actor_losses'].append(actor_loss.detach())
 
+			############## SD ##############
+			n_timesteps.append(t_so_far)
+			avg_eps_return.append(np.mean([np.sum(ep_rews) for ep_rews in self.logger['batch_rews']]))
+			################################
+			
 			# Print a summary of our training so far
 			self._log_summary()
 
@@ -147,6 +158,9 @@ class PPO:
 			if i_so_far % self.save_freq == 0:
 				torch.save(self.actor.state_dict(), './ppo_actor.pth')
 				torch.save(self.critic.state_dict(), './ppo_critic.pth')
+
+				np.save('n_timesteps.npy', n_timesteps)
+				np.save('avg_eps_return.npy', avg_eps_return)
 
 	def rollout(self):
 		"""
