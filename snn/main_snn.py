@@ -41,7 +41,7 @@ def train(env, params):
         print('You should only see lif1.mem, lif2.mem and lif3.mem above. If that\'s the case, the model has been loaded successfully.')
 
     # Train the PPO model with a specified total timesteps
-    model.learn(total_timesteps=1_005_000)
+    model.learn(total_timesteps=100_000_000)
 
 
 if __name__ == '__main__':
