@@ -41,7 +41,7 @@ def train(env, params):
         print('You should only see lif1.mem, lif2.mem and lif3.mem above. If that\'s the case, the model has been loaded successfully.')
 
     # Train the PPO model with a specified total timesteps
-    model.learn(total_timesteps=200_000_000)
+    model.learn(total_timesteps=1_005_000)
 
 
 if __name__ == '__main__':
@@ -70,7 +70,7 @@ if __name__ == '__main__':
     hyper_params.actor_model = './snn_ppo_actor.pth'
     hyper_params.critic_model = './snn_ppo_critic.pth'
     hyper_params.save_freq = 10  # How often to save the model
-    hyper_params.load_last_model = True  # whether last saved model should be loaded
+    hyper_params.load_last_model = False  # whether last saved model should be loaded
 
     # Create environment
     pendulum_env = gym.make('Pendulum-v0')

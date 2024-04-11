@@ -144,6 +144,10 @@ class PPO:
         # number of times model has been updated (multiple update steps using a single rollout batch in PPO is considered one step)
         self.logger.n_updates = 0
 
+        # variables for tracking reward growth with timestps
+        n_timesteps = []
+        avg_eps_return = []
+
         while t_so_far < total_timesteps:
             # collect a batch of simulations
             batch_obs, batch_action, batch_log_prob, batch_rewards_to_go, batch_eps_length = self.rollout()
@@ -188,6 +192,9 @@ class PPO:
                 # Log actor loss
                 self.logger.actor_loss.append(actor_loss.detach().numpy().item())
 
+            n_timesteps.append(t_so_far)
+            avg_eps_return.append(np.mean([np.sum(eps_rewards) for eps_rewards in self.logger.batch_rewards]))
+            
             # Update the logger
             self.logger.n_updates += 1
             self.logger.t_so_far = t_so_far
@@ -199,6 +206,9 @@ class PPO:
                 torch.save(self.actor.state_dict(), './snn_ppo_actor.pth')
                 torch.save(self.critic.state_dict(), './snn_ppo_critic.pth')
 
+                np.save('n_timesteps_snn.npy', n_timesteps)
+                np.save('avg_eps_return_snn.npy', avg_eps_return)
+
     def log_summary(self):
         # compute average episode rewards and actor loss
         avg_eps_rewards = np.mean([np.sum(eps_rewards) for eps_rewards in self.logger.batch_rewards])
@@ -207,7 +217,7 @@ class PPO:
         print(f'-------------------Iteration #{self.logger.n_updates}------------------------')
         print(f'Time steps completed: {self.logger.t_so_far}')
         print(f'Average reward: {avg_eps_rewards:.2f}')
-        print(f'Actor losses: {['{:.2f}'.format(loss) for loss in self.logger.actor_loss]}')
+        print(f'Actor losses: {["{:.2f}".format(loss) for loss in self.logger.actor_loss]}')
         print(f'Average actor loss: {avg_actor_loss:.2f}')
         print('\n')
 

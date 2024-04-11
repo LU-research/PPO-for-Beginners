@@ -159,8 +159,10 @@ class PPO:
 				torch.save(self.actor.state_dict(), './ppo_actor.pth')
 				torch.save(self.critic.state_dict(), './ppo_critic.pth')
 
+				############## SD ##############
 				np.save('n_timesteps.npy', n_timesteps)
 				np.save('avg_eps_return.npy', avg_eps_return)
+				################################
 
 	def rollout(self):
 		"""
