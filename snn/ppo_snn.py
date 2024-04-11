@@ -209,6 +209,9 @@ class PPO:
                 np.save('n_timesteps_snn.npy', n_timesteps)
                 np.save('avg_eps_return_snn.npy', avg_eps_return)
 
+        np.save('n_timesteps_snn.npy', n_timesteps)
+        np.save('avg_eps_return_snn.npy', avg_eps_return)
+
     def log_summary(self):
         # compute average episode rewards and actor loss
         avg_eps_rewards = np.mean([np.sum(eps_rewards) for eps_rewards in self.logger.batch_rewards])
