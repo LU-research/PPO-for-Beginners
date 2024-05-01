@@ -1,5 +1,6 @@
 import math
 import numpy as np
+from PIL import Image
 import torch
 import torch.nn as nn
 from torch.optim import Adam
@@ -89,10 +90,14 @@ class PPO:
             obs = self.env.reset()
             done = False
 
+            render_frame = 0
             for t_eps in range(self.params.max_timesteps_per_episode):
                 # render environment in the first episode
                 if (self.params.ppo_render is True) and (len(batch_eps_lengths) == 0):
-                    self.env.render()
+                    img = self.env.render(mode='rgb_array')
+                    im = Image.fromarray(img)
+                    im.save(f'img/img_{render_frame}.png')
+                    render_frame += 1
                 # Increment timesteps ran in this batch so far
                 t_so_far_in_batch += 1
 
